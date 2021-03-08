@@ -8,13 +8,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user: {
-        type: Sequelize.STRING,
+      userId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-      room: {
-        type: Sequelize.STRING,
+      roomId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+      },
+      meeting: {
+        type: Sequelize.STRING,
       },
       date: {
         type: Sequelize.DATE,

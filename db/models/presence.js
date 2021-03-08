@@ -10,13 +10,23 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.belongsTo(models.Users, {
+        foreignKey: 'userId',
+        as: 'student',
+        onDelete: 'CASCADE',
+      });
+      this.belongsTo(models.Rooms, {
+        foreignKey: 'roomId',
+        as: 'room',
+        onDelete: 'CASCADE',
+      });
     }
   };
   Presence.init({
-    user: DataTypes.STRING,
-    room: DataTypes.STRING,
-    date: DataTypes.DATE
+    date: DataTypes.DATE,
+    userId: DataTypes.INTEGER,
+    roomId: DataTypes.INTEGER,
+    meeting: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Presence',
