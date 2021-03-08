@@ -13,6 +13,7 @@ const main = (req, res) => {
         console.log(error,result)
         res.send(error,result)
     });
+    res.json('ok')
 }
 
 module.exports = {
