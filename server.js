@@ -22,6 +22,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 // app.use('/', routes)
+
 app.use('/', main)
 
 // app.use(errorHandler)
@@ -34,9 +35,10 @@ app.use('/', main)
 //     swaggerUi.serve,
 //     swaggerUi.setup(swaggerDocument, {
 //         explorer: true,
+
 //     })
 // )
-
+// 
 app.listen(PORT, () => {
     console.log(`App running on port http://localhost:${PORT}`);
   });
