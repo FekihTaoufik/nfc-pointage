@@ -3,11 +3,11 @@ const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      this.hasMany(models.Presence, {
+      this.hasMany(models.attendance, {
         foreignKey: 'userId',
-        as: 'presences',
+        as: 'Attendances',
       })
-      this.belongsTo(models.Group, {
+      this.belongsTo(models.group, {
         foreignKey: 'groupId',
         as: 'Group',
       })

@@ -3,12 +3,12 @@ const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class attendance extends Model {
     static associate(models) {
-      this.belongsTo(models.Users, {
+      this.belongsTo(models.user, {
         foreignKey: 'userId',
         as: 'user',
         onDelete: 'CASCADE',
       })
-      this.belongsTo(models.Sessions, {
+      this.belongsTo(models.session, {
         foreignKey: 'sessionId',
         as: 'session',
         onDelete: 'CASCADE',

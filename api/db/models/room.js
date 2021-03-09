@@ -3,9 +3,9 @@ const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Room extends Model {
     static associate(models) {
-      this.hasMany(models.Attendance, {
+      this.hasMany(models.session, {
         foreignKey: 'roomId',
-        as: 'Attendances',
+        as: 'Sessions',
         onDelete: 'CASCADE',
       })
     }
