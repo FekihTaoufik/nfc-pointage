@@ -1,7 +1,7 @@
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  class Room extends Model {
+  class room extends Model {
     static associate(models) {
       this.hasMany(models.session, {
         foreignKey: 'roomId',
@@ -10,15 +10,15 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
   }
-  Room.init(
+  room.init(
     {
       uuid: DataTypes.STRING,
       name: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: 'Room',
+      modelName: 'room',
     }
   )
-  return Room
+  return room
 }

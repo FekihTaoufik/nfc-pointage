@@ -17,8 +17,24 @@ module.exports = (sequelize, DataTypes) => {
   }
   attendance.init(
     {
-      userId: DataTypes.INTEGER,
-      sessionId: DataTypes.INTEGER,
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        foreignKey: true,
+        references: {
+          model: 'user',
+          key: 'id',
+        },
+      },
+      sessionId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        foreignKey: true,
+        references: {
+          model: 'session',
+          key: 'id',
+        },
+      },
       startedAt: DataTypes.DATE,
       endedAt: DataTypes.DATE,
     },
