@@ -26,9 +26,33 @@ module.exports = (sequelize, DataTypes) => {
   };
   session.init({
     name: DataTypes.STRING,
-    teacherId: DataTypes.INTEGER,
-    groupId: DataTypes.INTEGER,
-    roomId: DataTypes.INTEGER,
+    teacherId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      foreignKey: true,
+      references: {
+        model: 'user',
+        key: 'id',
+      },
+    },
+    groupId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      foreignKey: true,
+      references: {
+        model: 'group',
+        key: 'id',
+      },
+    },
+    roomId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      foreignKey: true,
+      references: {
+        model: 'room',
+        key: 'id',
+      },
+    },
     startedAt: DataTypes.DATE,
     endedAt: DataTypes.DATE
   }, {
