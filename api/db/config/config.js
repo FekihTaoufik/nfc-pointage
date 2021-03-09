@@ -1,15 +1,15 @@
 require('dotenv').config()
 module.exports = {
   development: {
-    url: process.env.DEV_DATABASE_URL,
+    url: `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`,
     dialect: 'postgres',
   },
   test: {
-    url: process.env.TEST_DATABASE_URL,
+    url: `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`,
     dialect: 'postgres',
   },
   production: {
-    url: process.env.DATABASE_URL,
+    url: `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`,
     dialect: 'postgres',
   },
 }
