@@ -1,9 +1,9 @@
-const express = require('express');
-const { validator, wrapAsync: wa } = require('express-server-app');
-const {main} = require('../controller/main');
+const express = require('express')
+const { validator, wrapAsync: wa } = require('express-server-app')
+const { main } = require('../controller/main')
 
-const router = express.Router();
+const router = express.Router()
 
-router.get('/', main);
+router.get('/', main)
 
-module.exports = router;
+module.exports = router

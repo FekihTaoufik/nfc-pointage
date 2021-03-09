@@ -1,9 +1,9 @@
-const main = require('./main');
+const main = require('./main')
 
 const routePath = (path, route) => ({
-	route,
-	path
+    route,
+    path,
 })
 module.exports = {
-	main: routePath('/main', main),
-};
+    main: routePath('/main', main),
+}
