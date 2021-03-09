@@ -1,7 +1,7 @@
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class user extends Model {
     static associate(models) {
       this.hasMany(models.attendance, {
         foreignKey: 'userId',
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
   }
-  User.init(
+  user.init(
     {
       universityCardId: DataTypes.INTEGER,
       email: DataTypes.STRING,
@@ -26,15 +26,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         foreignKey: true,
         references: {
-          model: 'groups',
+          model: 'group',
           key: 'id',
         },
       },
     },
     {
       sequelize,
-      modelName: 'User',
+      modelName: 'user',
     }
   )
-  return User
+  return user
 }
