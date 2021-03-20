@@ -23,7 +23,6 @@ fs
     const model = require(path.join(__dirname, file));
     const name = file.split('.js')[0]
     db[name] = model;
-    console.log(file, name);
   });
 
 Object.keys(db).forEach(modelName => {
@@ -31,7 +30,6 @@ Object.keys(db).forEach(modelName => {
     db[modelName].associate(db);
   }
 });
-console.log('keys', Object.keys(db));
 
 Object.keys(db).forEach(modelName => {
   db[modelName] = db[modelName](sequelize, Sequelize);
