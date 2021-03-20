@@ -1,4 +1,5 @@
 const main = require('./main')
+const attendance = require('./attendance')
 
 const routePath = (path, route) => ({
     route,
@@ -6,4 +7,5 @@ const routePath = (path, route) => ({
 })
 module.exports = {
     main: routePath('/main', main),
+    attendance: routePath('/attendance', attendance),
 }

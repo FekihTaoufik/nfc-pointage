@@ -6,7 +6,7 @@ module.exports = {
       [
         {
           id: 1,
-          username: 'student',
+          universityCardId: 1234,
           password: crypto
             .createHash('md5')
             .update('nfc-pointeur')
@@ -20,7 +20,7 @@ module.exports = {
         },
         {
           id: 2,
-          username: 'teacher2',
+          universityCardId: 5678,
           password: crypto
             .createHash('md5')
             .update('nfc-pointeur')
