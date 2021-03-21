@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PointageNFC</string>
+    <string name="bienvenue1">Bienvenue!</string>
+    <string name="nom_et_prenom_de_l_enseignant">Nom et prenom de l\'enseignant</string>
+    <string name="se_deconnecter">Se deconnecter</string>
+    <string name="nom_et_prenom_de_l_etudiant">Nom et prenom de l\'etudiant</string>
+    <string name="se_deconnecteretu">Se deconnecter</string>
+    <string name="bienvenue">Bienvenue!</string>
+</resources>
