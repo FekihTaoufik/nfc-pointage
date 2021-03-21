@@ -3,7 +3,6 @@ const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class group extends Model {
     static associate(models) {
-      // define association here
       this.hasMany(models.user, {
         foreignKey: 'groupId',
         as: 'Users',

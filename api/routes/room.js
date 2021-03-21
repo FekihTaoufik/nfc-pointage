@@ -1,11 +1,11 @@
 const express = require('express')
 const { validator, wrapAsync: wa } = require('express-server-app')
-const { getAttendances, postAttendenceStart } = require('../controller/attendance')
+const { getRooms, roomLogin } = require('../controller/room')
 
 const router = express.Router()
 
-router.get('/', getAttendances)
+router.get('/', getRooms)
 
-router.post('/', postAttendenceStart)
+router.post('/login', roomLogin)
 
 module.exports = router

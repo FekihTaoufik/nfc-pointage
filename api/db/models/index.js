@@ -14,15 +14,16 @@ if (config.url) {
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
+
 fs
   .readdirSync(__dirname)
   .filter(file => {
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
   .forEach(file => {
-    const model = require(path.join(__dirname, file));
-    const name = file.split('.js')[0]
-    db[name] = model;
+    const modelComp = require(path.join(__dirname, file));
+    const model = modelComp(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
   });
 
 Object.keys(db).forEach(modelName => {
@@ -31,11 +32,9 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-Object.keys(db).forEach(modelName => {
-  db[modelName] = db[modelName](sequelize, Sequelize);
-});
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
 module.exports = db;
 
 //models/index.js
