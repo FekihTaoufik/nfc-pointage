@@ -9,5 +9,5 @@ const routePath = (path, route) => ({
 module.exports = {
     attendance: routePath('/attendance', attendance),
     user: routePath('/user', user),
-    user: routePath('/room', room),
+    room: routePath('/room', room),
 }
