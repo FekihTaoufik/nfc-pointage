@@ -8,7 +8,9 @@ const api = require('./api');
 log().debug('starting server.js');
 
 const app = application()
+	
 	.useInitialMiddlewares({ forceHttps: false });
+
 
 app.useRootRoute()
 	.useHealthyRoute()

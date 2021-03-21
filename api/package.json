@@ -16,6 +16,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-server-app": "^0.5.3",
+    "faker": "^5.4.0",
+    "lodash": "^4.17.21",
     "node-fetch": "^2.6.1",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
