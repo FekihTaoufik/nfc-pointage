@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { View, Text, Button, TextInput } from 'react-native';
 import { postLogin } from '../apiRequest.js/apiRoutes/room';
+import { KEY_ROOM, storeData } from '../lib/localstore';
 
-export const ScreenAuth = ({ navigation }) => {
+export const ScreenAuth = ({ logIn }) => {
   const [text, setText] = useState('');
-  console.log({ text: { text : { text }} });
-  postLogin(text).then((res) => {
-    console.log({res});
-  }).catch((err) => {
-    console.log({ err });
+
+  const handleClickConnect = useCallback(async() => {
+    const res = await postLogin(text);
+    await storeData(KEY_ROOM, res);
+    await logIn(res);
   })
   return (
     <View style={{padding: 10}}>
@@ -26,14 +27,9 @@ export const ScreenAuth = ({ navigation }) => {
         {text}
       </Text> */}
       <Button
-          title="se connecter la salle"
-          onPress={() => {
-            postLogin(text).then((res) => {
-              console.log({res});
-            }).catch((err) => {
-              console.log(err);
-            })
-          }}
+          title="se connecter"
+          disabled={!text}
+          onPress={handleClickConnect}
         />
     </View>
   );
