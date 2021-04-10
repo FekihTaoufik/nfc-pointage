@@ -18,6 +18,7 @@
     "express-server-app": "^0.5.3",
     "faker": "^5.4.0",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "node-fetch": "^2.6.1",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
