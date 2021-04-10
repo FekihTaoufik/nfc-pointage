@@ -6,18 +6,20 @@ const router = express.Router()
 
 router.get('/', getRooms)
 
-router.get('/current-session/:roomId',
-validator().validate({
+router.get(
+  '/current-session/:roomId',
+  validator().validate({
     params: {
-        type: 'object',
-		additionalProperties: false,
-        properties: {
-            roomId: { type: 'string'},
-        },
-        required: ['roomId']
-    }
-}),
-wa(getCurrentSession))
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        roomId: { type: 'string' },
+      },
+      required: ['roomId'],
+    },
+  }),
+  wa(getCurrentSession)
+)
 
 router.post('/login', roomLogin)
 
