@@ -18,7 +18,7 @@ const createDemoSession = async (req, res, next) => {
 
   if (!foundRoom) return next(badData('Room not found'))
 
-  const createdSession = await db.session.create({
+  const createdSession = await db.session.upsert({
     name: `Demo session starting from ${startDateTime} until ${endDateTime}`,
     teacherId: _.random(1, 5),
     groupId: _.random(1, 4),
