@@ -42,51 +42,22 @@ function NdefWriteScreen(props) {
         tech: NfcTech.Ndef,
         tnf: Ndef.TNF_WELL_KNOWN,
         value: handlerRef.current.getValue(),
+        rtd: Ndef.RTD_TEXT,
       };
-
-      if (ndefType === 'TEXT') {
-        payload.rtd = Ndef.RTD_TEXT;
-      } else if (ndefType === 'URI') {
-        payload.rtd = Ndef.RTD_URI;
-      } else if (ndefType === 'WIFI_SIMPLE') {
-        payload.tnf = Ndef.TNF_MIME_MEDIA;
-        payload.mimeType = Ndef.MIME_WFA_WSC;
-      } else {
-        throw new Error('NdefWriteScreen: cannot persist this payload');
-      }
-
       return payload;
     }
-
     return null;
   }
 
   const _renderNdefWriter = () => {
     const value = getSavedValue();
-    if (ndefType === 'TEXT') {
-      return <RtdTextWriter ref={handlerRef} value={value} />;
-    } else if (ndefType === 'URI') {
-      const scheme = value?.scheme || params.scheme;
-      if (scheme) {
-        return (
-          <RtdUriShortcutWriter
-            ref={handlerRef}
-            value={value}
-            scheme={scheme}
-          />
-        );
-      }
-      return <RtdUriWriter ref={handlerRef} value={value} />;
-    } else if (ndefType === 'WIFI_SIMPLE') {
-      return <WifiSimpleWriter ref={handlerRef} value={value} />;
-    }
-    return null;
+    return <RtdTextWriter ref={handlerRef} value={value} />;
   };
 
   return (
     <>
       <ScreenHeader
-        title="WRITE NDEF"
+        title="Ecrire un utilisateur sur un tag"
         navigation={props.navigation}
         getRecordPayload={getRecordPayload}
       />

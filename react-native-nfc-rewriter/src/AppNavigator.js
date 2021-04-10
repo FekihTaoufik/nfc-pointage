@@ -5,12 +5,12 @@ import {Appbar} from 'react-native-paper';
 import LandingScreen from './Screens/Landing';
 import HomeScreen from './Screens/Home';
 import TagDetailScreen from './Screens/TagDetail';
-import NdefTypeListScreen from './Screens/NdefTypeList';
 import NdefWriteScreen from './Screens/NdefWrite';
 import ToolKitScreen from './Screens/Toolkit';
 import CustomTransceiveScreen from './Screens/CustomTransceive';
 import SettingsScreen from './Screens/Settings';
 import SavedRecordScreen from './Screens/SavedRecord';
+import {ScreenRoom} from './Screens/Room';
 import NfcPromptAndroid from './Components/NfcPromptAndroid';
 
 const MainStack = createStackNavigator();
@@ -51,19 +51,14 @@ function Main(props) {
         component={TagDetailScreen}
       />
       <MainStack.Screen
-        name="NdefTypeList"
-        component={NdefTypeListScreen}
-        options={{title: 'CHOOSE NDEF TYPE'}}
-      />
-      <MainStack.Screen
         name="NdefWrite"
         component={NdefWriteScreen}
         options={{title: 'WRITE NDEF'}}
       />
       <MainStack.Screen
-        name="ToolKit"
-        component={ToolKitScreen}
-        options={{title: 'NFC TOOL KIT'}}
+        name="Room"
+        component={ScreenRoom}
+        options={{title: 'Salle'}}
       />
       <MainStack.Screen
         name="CustomTransceive"

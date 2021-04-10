@@ -32,7 +32,8 @@ function tnfValueToName(value) {
   return null;
 }
 
-function rtdValueToName(value) {
+export const rtdValueToName = (value) => {
+  console.log('rtdValueToName', value);
   value = value.reduce((acc, byte) => acc + String.fromCharCode(byte), '');
   for (let name in RTD_MAP) {
     if (value === RTD_MAP[name]) {
@@ -40,7 +41,7 @@ function rtdValueToName(value) {
     }
   }
   return null;
-}
+};
 
 class NdefMessage extends React.Component {
   render() {

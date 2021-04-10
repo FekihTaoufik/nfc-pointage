@@ -46,39 +46,23 @@ function HomeScreen(props) {
         <Button
           mode="contained"
           onPress={async () => {
-            const tag = await NfcProxy.readTag();
-            if (tag) {
-              navigation.navigate('TagDetail', {tag});
-            }
+            navigation.navigate('Room');
+            // const tag = await NfcProxy.readTag();
+            // if (tag) {
+            //   navigation.navigate('TagDetail', {tag});
+            // }
           }}
           style={{marginBottom: 10}}>
-          READ TAGs
+          Salle
         </Button>
 
         <Button
           mode="contained"
           onPress={async () => {
-            navigation.navigate('NdefTypeList');
+            navigation.navigate('NdefWrite', {ndefType: 'TEXT'});
           }}
           style={{marginBottom: 10}}>
-          WRITE NDEF
-        </Button>
-
-        <Button
-          mode="contained"
-          onPress={async () => {
-            navigation.navigate('ToolKit');
-          }}
-          style={{marginBottom: 10}}>
-          ToolKit
-        </Button>
-
-        <Button
-          mode="outlined"
-          onPress={async () => {
-            navigation.navigate('SavedRecord');
-          }}>
-          MY RECORDS
+          Utilisateur
         </Button>
       </View>
     );
