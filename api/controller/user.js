@@ -1,3 +1,4 @@
+const { notFound, unauthorized } = require('@hapi/boom');
 const db = require('../db/models')
 
 const getUsers = (req, res, next) => {
@@ -29,6 +30,9 @@ const userLogin = (req, res, next) => {
         }
     })
         .then((users) => {
+            if (users === null) {
+                throw notFound(`Le numéro ${universityCardId} n\'est associé à aucun utilisateur.`);
+            }
             res.json(users);
         })
         .catch(next)
