@@ -5,3 +5,8 @@ export const roomPostLogin = (uuid) =>
     method: 'POST',
     body: {uuid},
   });
+
+export const roomGetCurrentSession = (roomId) =>
+  requestApi('/room/current-session/' + roomId, {
+    method: 'GET',
+  });

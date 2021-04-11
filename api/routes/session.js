@@ -7,7 +7,18 @@ const {
 
 const router = express.Router()
 
-router.post('/create-demo', createDemoSession)
+router.post('/create-demo',
+validator().validate({
+  body: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      roomId: { type: 'number' },
+    },
+    required: ['roomId'],
+  },
+}),
+createDemoSession)
 
 router.get(
   '/:sessionId/attendances',

@@ -1,16 +1,19 @@
 const { notFound,badRequest, unauthorized, } = require('@hapi/boom');
 const { validator, wrapAsync: wa } = require('express-server-app')
+const moment = require('moment')
+moment.locale('fr')
 
 const db = require('../db/models')
 const { Op } = require('sequelize');
 
 const getAttendances = (req, res, next) => {
-
+    const {sessionId} = req.params
     db.attendance.findAll({
         include: {
             model: db.user,
             as: 'user'
-        }
+        },
+        where: {sessionId}
     })
         .then((atts) => {
             res.json(atts);
@@ -27,7 +30,7 @@ const postAttendenceStart = wa(async (req, res, next) => {
     // const date = "2020-11-04T08:30:00.000Z";
     // const dateParsed = Date.parse(date)
     // const reelDate = new Date(dateParsed)
-    const reelDate = new Date()
+    const reelDate = moment()
     const session = await db.session.findOne({
         where: {
           startedAt: {
@@ -70,8 +73,7 @@ const postAttendenceStart = wa(async (req, res, next) => {
             sessionId: session.id,
         })
         res.json(attendances)
-    }
-    res.json('ok')
+    } else res.json(user)
 });
 
 module.exports = {

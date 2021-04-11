@@ -26,7 +26,7 @@ export const ScreenAuth = ({logIn}) => {
         color="black"
         title="Demo uuid"
         onPress={() => {
-          setText('23ed0b0a-270d-4aff-a0d0-e2ac77a73626');
+          setText('b1388d74-fb8c-4cd1-9f9b-9602189f165b');
         }}
       />
       {/* <Text style={{padding: 10, fontSize: 42}}>

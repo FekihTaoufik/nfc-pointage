@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import NfcManager, {
   NfcTech,
   Ndef,
@@ -6,10 +6,35 @@ import NfcManager, {
   NfcErrorIOS,
 } from 'react-native-nfc-manager';
 import * as AppContext from './AppContext';
+import {rtdValueToName} from './Components/NdefMessage';
 
 class ErrSuccess extends Error {}
 
-const withAndroidPrompt = (fn) => {
+const decodeTagNDEF = (tag) => {
+  const ndef =
+    Array.isArray(tag.ndefMessage) && tag.ndefMessage.length > 0
+      ? tag.ndefMessage[0]
+      : null;
+  if (ndef?.type && rtdValueToName(ndef?.type) === 'TEXT') {
+    return Ndef.text.decodePayload(ndef.payload);
+  }
+  return null;
+};
+
+const getValue = (tag) => {
+  let value = null;
+  if (tag) {
+    value = decodeTagNDEF(tag);
+    if (!value) {
+      Alert.alert(
+        'Mauvais tag',
+        "Le format de ce tag n'est pas supporté par l'application",
+      );
+    }
+  }
+  return value;
+};
+const withAndroidPrompt = (fn, noClose) => {
   async function wrapper() {
     try {
       if (Platform.OS === 'android') {
@@ -20,7 +45,7 @@ const withAndroidPrompt = (fn) => {
     } catch (ex) {
       throw ex;
     } finally {
-      if (Platform.OS === 'android') {
+      if (Platform.OS === 'android' && !noClose) {
         AppContext.Actions.setShowNfcPrompt(false);
       }
     }
@@ -77,23 +102,27 @@ class NfcProxy {
     });
   });
 
-  readTag = withAndroidPrompt(async () => {
+  readTag = withAndroidPrompt(async (callback) => {
+    console.log('readTag');
     let tag = null;
+    let value = null;
     try {
       await NfcManager.requestTechnology([NfcTech.Ndef]);
 
       tag = await NfcManager.getTag();
       tag.ndefStatus = await NfcManager.ndefHandler.getNdefStatus();
-
       await NfcManager.cancelTechnologyRequest();
+      value = getValue(tag);
+      if (callback) {
+        await callback();
+      }
     } catch (ex) {
       if (NfcErrorIOS.parse(ex) !== NfcErrorIOS.errCodes.userCancel) {
         console.warn(ex);
       }
     }
-
-    return tag;
-  });
+    return {tag, value};
+  }, true);
 
   writeNdef = withAndroidPrompt(async ({type, value}) => {
     let result = false;

@@ -23,7 +23,6 @@ export const ScreenRoom = () => {
     });
   }, []);
 
-  console.log('data', data);
   const render = useMemo(
     () =>
       data ? (

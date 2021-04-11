@@ -7,7 +7,7 @@ const db = require('../db/models')
 const { Op } = require('sequelize')
 
 const createDemoSession = async (req, res, next) => {
-  const { roomId } = req.body
+  const { roomId, groupId, teacherId } = req.body
 
   const startDateTime = moment()
   const endDateTime = moment().add(3, 'hours')
@@ -21,11 +21,25 @@ const createDemoSession = async (req, res, next) => {
   const createdSession = await db.session.create({
     id : _.random(1000,99999999),
     name: `Demo session starting from ${startDateTime} until ${endDateTime}`,
-    teacherId: _.random(1, 5),
-    groupId: _.random(1, 4),
+    teacherId: teacherId || 1,
+    groupId: groupId || 1,
     roomId: roomId,
     startedAt: startDateTime,
     endedAt: endDateTime,
+  }, {
+    include:[{
+      model: db.user,
+      as: 'Teacher'
+  },
+  {
+      model: db.room,
+      as: 'Room'
+  },
+  {
+      model: db.group,
+      as: 'Group'
+  },
+],
   })
 
   res.json(createdSession)
