@@ -1,4 +1,4 @@
-const { notFound, unauthorized } = require('@hapi/boom');
+const { notFound,badRequest, unauthorized, } = require('@hapi/boom');
 const { validator, wrapAsync: wa } = require('express-server-app')
 
 const db = require('../db/models')
@@ -39,10 +39,18 @@ const postAttendenceStart = wa(async (req, res, next) => {
           roomId,
         }
     });
-    console.log(session);
     if (session === null) {
         throw notFound('aucune session n\'est programmée en ce moment pour cette salle');
     }
+    let registeredAttendance = await db.attendance.findOne({
+        where : {
+             userId: userId,
+            sessionId: session.id,
+        }
+    })
+    if(!!registeredAttendance)
+        return badRequest(new Error('Vous avez déjà pointé votre présence pour cette séance'))
+
     await db.attendance.create({
         userId: userId,
         sessionId: session.id,
@@ -53,7 +61,6 @@ const postAttendenceStart = wa(async (req, res, next) => {
             id: userId,
         }
     });
-    console.log(user);
     if (user.role === 'TEACHER'){
         const attendances = await db.attendance.findAll({
             include: {
