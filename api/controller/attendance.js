@@ -9,10 +9,10 @@ const { Op } = require('sequelize');
 const getAttendances = (req, res, next) => {
     const {sessionId} = req.params
     db.attendance.findAll({
-        include: {
-            model: db.user,
-            as: 'user'
-        },
+        // include: {
+        //     model: db.user,
+        //     as: 'user'
+        // },
         where: {sessionId}
     })
         .then((atts) => {
@@ -52,7 +52,7 @@ const postAttendenceStart = wa(async (req, res, next) => {
         }
     })
     if(!!registeredAttendance)
-        return badRequest(new Error('Vous avez déjà pointé votre présence pour cette séance'))
+        throw badRequest('Vous avez déjà pointé votre présence pour cette séance')
 
     await db.attendance.create({
         userId: userId,
@@ -64,16 +64,7 @@ const postAttendenceStart = wa(async (req, res, next) => {
             id: userId,
         }
     });
-    if (user.role === 'TEACHER'){
-        const attendances = await db.attendance.findAll({
-            include: {
-                model: db.user,
-                as: 'user'
-            },
-            sessionId: session.id,
-        })
-        res.json(attendances)
-    } else res.json(user)
+    res.json(user)
 });
 
 module.exports = {

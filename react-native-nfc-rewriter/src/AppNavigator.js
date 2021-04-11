@@ -2,16 +2,17 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Appbar} from 'react-native-paper';
+
 import LandingScreen from './Screens/Landing';
 import HomeScreen from './Screens/Home';
 import TagDetailScreen from './Screens/TagDetail';
 import NdefWriteScreen from './Screens/NdefWrite';
-import ToolKitScreen from './Screens/Toolkit';
 import CustomTransceiveScreen from './Screens/CustomTransceive';
 import SettingsScreen from './Screens/Settings';
 import SavedRecordScreen from './Screens/SavedRecord';
 import {ScreenRoom} from './Screens/Room';
 import NfcPromptAndroid from './Components/NfcPromptAndroid';
+import {ScreenListAttendance} from './Screens/Room/ListAttendence';
 
 const MainStack = createStackNavigator();
 
@@ -59,6 +60,11 @@ function Main(props) {
         name="Room"
         component={ScreenRoom}
         options={{title: 'Salle'}}
+      />
+      <MainStack.Screen
+        name="Attendances"
+        component={ScreenListAttendance}
+        options={{title: 'Liste des présences'}}
       />
       <MainStack.Screen
         name="CustomTransceive"

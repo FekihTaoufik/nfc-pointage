@@ -21,15 +21,16 @@ validator().validate({
 createDemoSession)
 
 router.get(
-  '/:sessionId/attendances',
+  '/:sessionId/:userId/attendances',
   validator().validate({
     params: {
       type: 'object',
       additionalProperties: false,
       properties: {
         sessionId: { type: 'string' },
+        userId: { type: 'string' },
       },
-      required: ['sessionId'],
+      required: ['sessionId', 'userId'],
     },
   }),
   wa(getAttendanceForSession)

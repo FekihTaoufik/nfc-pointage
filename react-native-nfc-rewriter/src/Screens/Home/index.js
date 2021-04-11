@@ -47,10 +47,6 @@ function HomeScreen(props) {
           mode="contained"
           onPress={async () => {
             navigation.navigate('Room');
-            // const tag = await NfcProxy.readTag();
-            // if (tag) {
-            //   navigation.navigate('TagDetail', {tag});
-            // }
           }}
           style={{marginBottom: 10}}>
           Salle

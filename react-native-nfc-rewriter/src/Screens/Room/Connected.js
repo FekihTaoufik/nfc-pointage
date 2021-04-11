@@ -20,6 +20,8 @@ console.log(rtdValueToName);
 const KEY = 'room';
 
 const getFullName = ({firstName, lastName}) => `${firstName} ${lastName}`;
+const getRoleTitle = ({role}) =>
+  `Présence ${role === 'TEACHER' ? 'professeur' : 'étudiante'} validée`;
 export const ScreenConnected = ({data, logOut}) => {
   const navigation = useNavigation();
   const [currentSession, setCurrentSession] = useState(null);
@@ -55,13 +57,20 @@ export const ScreenConnected = ({data, logOut}) => {
           userId: value,
           roomId: data.id,
         };
-        sessionPostAttendance(body).then((user) => {
-          console.log('user', user);
-          Alert.alert(
-            'Présence étudiante validée',
-            `La présence de ${getFullName(user)} a été validée.`,
-          );
-        });
+        sessionPostAttendance(body)
+          .then((user) => {
+            if (user.error) {
+              Alert.alert('Pointage', user.message);
+            } else {
+              Alert.alert(
+                getRoleTitle(user),
+                `La présence de ${getFullName(user)} a été validée.`,
+              );
+            }
+          })
+          .catch((err) => {
+            console.log('err', err);
+          });
       }
     });
   }, [data.id]);
@@ -69,12 +78,19 @@ export const ScreenConnected = ({data, logOut}) => {
   const readAttendancesTagNFC = useCallback(() => {
     NfcProxy.readTag().then(({value}) => {
       if (value) {
-        sessionGetAttendance(currentSession.id).then((attendences) => {
-          console.log('attendences', attendences);
+        sessionGetAttendance(currentSession.id, value).then((attendances) => {
+          if (attendances.error) {
+            Alert.alert("Erreur d'autorisation", attendances.message);
+          } else {
+            navigation.navigate('Attendances', {
+              attendances,
+              session: currentSession,
+            });
+          }
         });
       }
     });
-  }, [currentSession]);
+  }, [currentSession, navigation]);
   return (
     <View style={styles.container}>
       <Text style={{padding: 10, fontSize: 42}}>{data.name}</Text>
@@ -106,7 +122,6 @@ export const ScreenConnected = ({data, logOut}) => {
           </View>
           <View>
             <Button
-              color="black"
               title="Voir les présences (professeur)"
               onPress={readAttendancesTagNFC}
             />

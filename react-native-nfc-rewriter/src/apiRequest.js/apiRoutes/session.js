@@ -12,5 +12,5 @@ export const sessionPostCreateDemo = (body) =>
     body,
   });
 
-export const sessionGetAttendance = (sessionId) =>
-  requestApi(`/session/${sessionId}/attendances`);
+export const sessionGetAttendance = (sessionId, userId) =>
+  requestApi(`/session/${sessionId}/${userId}/attendances`);

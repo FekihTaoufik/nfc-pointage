@@ -102,27 +102,28 @@ class NfcProxy {
     });
   });
 
-  readTag = withAndroidPrompt(async (callback) => {
-    console.log('readTag');
-    let tag = null;
-    let value = null;
-    try {
-      await NfcManager.requestTechnology([NfcTech.Ndef]);
+  readTag = (callback) =>
+    withAndroidPrompt(async () => {
+      console.log('readTag');
+      let tag = null;
+      let value = null;
+      try {
+        await NfcManager.requestTechnology([NfcTech.Ndef]);
 
-      tag = await NfcManager.getTag();
-      tag.ndefStatus = await NfcManager.ndefHandler.getNdefStatus();
-      await NfcManager.cancelTechnologyRequest();
-      value = getValue(tag);
-      if (callback) {
-        await callback();
+        tag = await NfcManager.getTag();
+        tag.ndefStatus = await NfcManager.ndefHandler.getNdefStatus();
+        await NfcManager.cancelTechnologyRequest();
+        value = getValue(tag);
+        if (callback) {
+          await callback();
+        }
+      } catch (ex) {
+        if (NfcErrorIOS.parse(ex) !== NfcErrorIOS.errCodes.userCancel) {
+          console.warn(ex);
+        }
       }
-    } catch (ex) {
-      if (NfcErrorIOS.parse(ex) !== NfcErrorIOS.errCodes.userCancel) {
-        console.warn(ex);
-      }
-    }
-    return {tag, value};
-  }, true);
+      return {tag, value};
+    }, !!callback)();
 
   writeNdef = withAndroidPrompt(async ({type, value}) => {
     let result = false;
