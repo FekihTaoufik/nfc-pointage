@@ -1,0 +1,7 @@
+[
+  {
+    "script": "server.js",
+    "name": "nfc.miage-project",
+    "watch": true
+  }
+]
