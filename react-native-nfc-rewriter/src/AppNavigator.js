@@ -95,7 +95,7 @@ function Settings(props) {
       }}>
       <SettingsStack.Screen
         name="Settings"
-        options={{title: 'Settings'}}
+        options={{title: 'A propos'}}
         component={SettingsScreen}
       />
     </SettingsStack.Navigator>

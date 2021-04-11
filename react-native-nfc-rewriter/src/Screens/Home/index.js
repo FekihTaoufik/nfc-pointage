@@ -117,18 +117,17 @@ function HomeScreen(props) {
             resizeMode="contain"
           />
         </View>
-
         {supported && !enabled && renderNfcNotEnabled()}
-
         {supported && enabled && renderNfcButtons()}
-
-        <IconButton
-          icon={() => <Icon name="settings" size={32} />}
+        <Button
+          icon={() => <Icon name="info" style={{color: 'grey'}} size={20} />}
+          color="grey"
           style={styles.settingIcon}
           onPress={() => {
             navigation.navigate('Settings');
-          }}
-        />
+          }}>
+          A propos
+        </Button>
       </View>
     </>
   );
