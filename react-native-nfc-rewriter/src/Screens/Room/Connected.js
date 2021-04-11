@@ -12,6 +12,7 @@ import {getData, storeData, KEY_ROOM} from '../../lib/localstore';
 import NfcProxy from '../../NfcProxy';
 import {rtdValueToName} from '../../Components/NdefMessage';
 import {
+  sessionGetAttendance,
   sessionPostAttendance,
   sessionPostCreateDemo,
 } from '../../apiRequest.js/apiRoutes/session';
@@ -39,16 +40,14 @@ export const ScreenConnected = ({data, logOut}) => {
   };
   useEffect(() => {
     if (!isFetched) {
-      getData(KEY).then(({id}) => {
-        roomGetCurrentSession(id).then((session) => {
-          if (session) {
-            setCurrentSession(session);
-          }
-          setIsFetched(true);
-        });
+      roomGetCurrentSession(data.id).then((session) => {
+        if (session) {
+          setCurrentSession(session);
+        }
+        setIsFetched(true);
       });
     }
-  }, [isFetched]);
+  }, [isFetched, data]);
   const readTagNFC = useCallback(() => {
     NfcProxy.readTag(readTagNFC).then(({value}) => {
       if (value) {
@@ -66,6 +65,16 @@ export const ScreenConnected = ({data, logOut}) => {
       }
     });
   }, [data.id]);
+
+  const readAttendancesTagNFC = useCallback(() => {
+    NfcProxy.readTag().then(({value}) => {
+      if (value) {
+        sessionGetAttendance(currentSession.id).then((attendences) => {
+          console.log('attendences', attendences);
+        });
+      }
+    });
+  }, [currentSession]);
   return (
     <View style={styles.container}>
       <Text style={{padding: 10, fontSize: 42}}>{data.name}</Text>
@@ -88,7 +97,20 @@ export const ScreenConnected = ({data, logOut}) => {
           <Text style={{marginBottom: 20, paddingVertical: 10, fontSize: 15}}>
             {currentSession.name}
           </Text>
-          <Button title="Badger la présence" onPress={readTagNFC} />
+          <View style={{marginBottom: 20}}>
+            <Button
+              style={{padding: 20}}
+              title="Badger la présence"
+              onPress={readTagNFC}
+            />
+          </View>
+          <View>
+            <Button
+              color="black"
+              title="Voir les présences (professeur)"
+              onPress={readAttendancesTagNFC}
+            />
+          </View>
         </View>
       )}
       <View style={styles.logout}>

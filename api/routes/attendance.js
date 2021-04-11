@@ -4,7 +4,7 @@ const { getAttendances, postAttendenceStart } = require('../controller/attendanc
 
 const router = express.Router()
 
-router.get('/', getAttendances)
+router.get('/:sessionId', wa(getAttendances))
 
 router.post('/', postAttendenceStart)
 

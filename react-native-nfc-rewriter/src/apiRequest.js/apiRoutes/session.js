@@ -11,3 +11,6 @@ export const sessionPostCreateDemo = (body) =>
     method: 'POST',
     body,
   });
+
+export const sessionGetAttendance = (sessionId) =>
+  requestApi(`/session/${sessionId}/attendances`);

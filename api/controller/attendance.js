@@ -7,12 +7,13 @@ const db = require('../db/models')
 const { Op } = require('sequelize');
 
 const getAttendances = (req, res, next) => {
-
+    const {sessionId} = req.params
     db.attendance.findAll({
         include: {
             model: db.user,
             as: 'user'
-        }
+        },
+        where: {sessionId}
     })
         .then((atts) => {
             res.json(atts);
