@@ -1,6 +1,12 @@
-import { requestApi } from "../request";
+import {requestApi} from '../request';
 
-export const postLogin = (uuid) => requestApi('/room/login', {
+export const roomPostLogin = (uuid) =>
+  requestApi('/room/login', {
     method: 'POST',
-    body: { uuid }
-})
+    body: {uuid},
+  });
+
+export const roomGetCurrentSession = (roomId) =>
+  requestApi('/room/current-session/' + roomId, {
+    method: 'GET',
+  });
