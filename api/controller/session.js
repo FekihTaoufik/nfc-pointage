@@ -1,4 +1,4 @@
-const { notFound, badData, unauthorized } = require('@hapi/boom')
+const { notFound, badRequest, unauthorized } = require('@hapi/boom')
 const { validator, wrapAsync: wa } = require('express-server-app')
 const _ = require('lodash')
 const moment = require('moment')
@@ -12,11 +12,11 @@ const createDemoSession = async (req, res, next) => {
   const startDateTime = moment()
   const endDateTime = moment().add(3, 'hours')
 
-  if (!roomId) return next(badData('Room id not correctly defined'))
+  if (!roomId) throw(badRequest('Room id not correctly defined'))
 
   const foundRoom = await db.room.findOne({ where: { id: roomId } })
 
-  if (!foundRoom) return next(badData('Room not found'))
+  if (!foundRoom) throw(notFound('Room not found'))
 
   const createdSession = await db.session.create({
     id : _.random(1000,99999999),
@@ -45,10 +45,16 @@ const createDemoSession = async (req, res, next) => {
   res.json(createdSession)
 }
 const getAttendanceForSession = async (req, res, next) => {
-  const { sessionId } = req.params
+  const { sessionId, userId } = req.params
 
-  if (!sessionId) return next(badData('Session id not correctly defined'))
-
+  
+  if (!sessionId) throw(badRequest('Session id not correctly defined'))
+  const user = await db.user.findOne({
+    where: {id: userId}
+  })
+  if (user.role !=='TEACHER') {
+    throw unauthorized('Seul un professeur peut accéder à la liste des présences.');
+  }
   const foundSession = await db.session.findOne({
     where: { id: sessionId },
     include: [
@@ -69,7 +75,7 @@ const getAttendanceForSession = async (req, res, next) => {
     ],
   })
 
-  if (!foundSession) return next(badData('Session not found'))
+  if (!foundSession) throw(notFound('Session not found'))
   let attendances = foundSession.dataValues.Attendances
   let attendants = foundSession.dataValues.Group.dataValues.Users
 
