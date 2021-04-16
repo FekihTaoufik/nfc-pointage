@@ -24,19 +24,7 @@ function ScreenHeader(props) {
       <Appbar.Header style={{backgroundColor: 'white'}}>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title={title} />
-        {!!getRecordPayload && (
-          <Appbar.Action
-            icon={() => <Icon name="save" size={22} />}
-            onPress={() => setSaveModalVisible(true)}
-          />
-        )}
       </Appbar.Header>
-
-      <SaveRecordModal
-        visible={saveModalVisible}
-        onClose={() => setSaveModalVisible(false)}
-        onPersistRecord={onPersistRecord}
-      />
     </>
   );
 }

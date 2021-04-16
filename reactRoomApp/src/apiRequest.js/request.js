@@ -6,7 +6,8 @@ export const requestApi = (path, options = {}) => {
     'Content-Type': 'application/json',
   };
   const b = JSON.stringify(body || {});
-  return fetch(`http://192.168.1.17:4000/api${path}`, {
+  console.log(`https://nfc.miage-project.tk/api${path}`);
+  return fetch(`https://nfc.miage-project.tk/api${path}`, {
     method: m,
     headers: h,
     body: m !== 'GET' && b,

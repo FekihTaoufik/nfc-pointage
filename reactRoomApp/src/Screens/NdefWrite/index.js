@@ -57,7 +57,7 @@ function NdefWriteScreen(props) {
   return (
     <>
       <ScreenHeader
-        title="Ecrire un utilisateur sur un tag"
+        title="Ecrire sur un tag"
         navigation={props.navigation}
         getRecordPayload={getRecordPayload}
       />

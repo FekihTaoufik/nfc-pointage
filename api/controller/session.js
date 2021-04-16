@@ -62,7 +62,7 @@ const getAttendanceForSession = async (req, res, next) => {
         model: db.group,
         as: 'Group',
         include: {
-          attributes:['id','firstName','lastName','role'],
+          attributes:['id','firstName','lastName','role','universityCardId'],
           model: db.user,
           as: 'Users',
 

@@ -1,4 +1,5 @@
 const { notFound, unauthorized } = require('@hapi/boom');
+const { Op } = require("sequelize");
 const db = require('../db/models')
 
 const getUsers = (req, res, next) => {
@@ -15,6 +16,24 @@ const getUsers = (req, res, next) => {
         .catch(next)
 }
 
+const getUsersDemo = (req, res, next) => {
+    db.user.findAll({
+        include: {
+            model: db.group,
+            as: 'Group'
+        },
+        where: {
+            [Op.or]: {
+                groupId: 1,
+                role: 'TEACHER'
+            }
+        },
+    })
+        .then((users) => {
+            res.json(users);
+        })
+        .catch(next)
+}
 const userLogin = (req, res, next) => {
     const { universityCardId, password } = req.body;
     console.log({
@@ -39,6 +58,7 @@ const userLogin = (req, res, next) => {
 }
 
 module.exports = {
+    getUsersDemo,
     getUsers,
     userLogin,
 }

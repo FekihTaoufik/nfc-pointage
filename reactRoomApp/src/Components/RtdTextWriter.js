@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, Alert, FlatList, StyleSheet} from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 import {Text} from 'react-native-paper';
-import {userPostLogin} from '../apiRequest.js/apiRoutes/user';
+import {userGetDemo, userPostLogin} from '../apiRequest.js/apiRoutes/user';
 import NfcProxy from '../NfcProxy';
 
 const messageUserSuccess = ({firstName, lastName, role}) => {
@@ -11,9 +11,31 @@ const messageUserSuccess = ({firstName, lastName, role}) => {
   } ${firstName} ${lastName} à bien été inséré dans le tag`;
 };
 
+const renderUser = ({firstName, lastName, role, universityCardId}) => {
+  return `${
+role === 'TEACHER' ? 'Professeur' : 'Etudiant'
+  } ${firstName} ${lastName}: ${universityCardId}`;
+};
+
 function RtdTextWriter(props, ref) {
   const inputRef = React.useRef();
   const [value, setValue] = React.useState(props.value || '');
+  const [demoData, setDemoData] = useState([]);
+  const [isFetched, setIsFetched] = useState(false);
+
+  useEffect(() => {
+    if (!isFetched) {
+      userGetDemo().then((session) => {
+        if (session) {
+          setDemoData(session);
+        }
+        else {
+          Alert.alert('Erreur de la requête', 'Activez votre connection internet ou contactez Swabahadine au 0669407370 !')
+        }
+        setIsFetched(true);
+      });
+    }
+  }, [isFetched]);
 
   if (ref) {
     ref.current = {
@@ -60,7 +82,7 @@ function RtdTextWriter(props, ref) {
         autoCapitalize={false}
         onChangeText={setValue}
         style={{marginBottom: 10}}
-        autoFocus={true}
+        // autoFocus={true}
       />
 
       <Button
@@ -73,11 +95,9 @@ function RtdTextWriter(props, ref) {
       <View style={styles.demoView}>
         <Text>Pour les démos, utilisez ces numéros :</Text>
         <FlatList
-          data={[
-            {key: 'Professeur Devan Considine: 192668'},
-            {key: 'Etudiant Kieria Wiza: 129672'},
-          ]}
-          renderItem={({item}) => <Text style={styles.item}>- {item.key}</Text>}
+          data={demoData}
+          keyExtractor={(item) => item.id}
+          renderItem={({item}) => <Text style={styles.item}>- {renderUser(item)}</Text>}
         />
       </View>
     </View>
