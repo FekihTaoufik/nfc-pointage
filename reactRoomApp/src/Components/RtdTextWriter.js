@@ -26,7 +26,7 @@ function RtdTextWriter(props, ref) {
   useEffect(() => {
     if (!isFetched) {
       userGetDemo().then((session) => {
-        if (session) {
+        if (!session.error) {
           setDemoData(session);
         }
         else {
