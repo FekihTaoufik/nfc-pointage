@@ -1,7 +1,9 @@
 import React from 'react';
 import {Avatar, List} from 'react-native-paper';
 
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {View, StyleSheet, FlatList} from 'react-native';
+import { Text, Title, Subheading, Paragraph, ActivityIndicator, Button } from 'react-native-paper';
+import { getDate, getHour} from '../../lib/helper';
 
 const getFullName = ({firstName, lastName}) => `${firstName} ${lastName}`;
 const getColor = ({present}) => (present ? 'teal' : 'black');
@@ -17,12 +19,17 @@ export const ScreenListAttendance = ({route}) => {
     }
     return a.present ? -1 : 1;
   });
-  console.log('attendences', attendances);
+  console.log('session', session);
   return (
     <View style={styles.container}>
-      <Text style={{margin: 10, fontSize: 20}}>
-        {session.Group.name} - {getFullName(session.Teacher)}
-      </Text>
+      <View style={{padding: 20}}>
+        <Title style={{fontSize: 20}}>
+          {session.Group.name} - Professeur {getFullName(session.Teacher)}
+        </Title>
+        <Subheading>
+        {getDate(session.startedAt)} - {getDate(session.endedAt)}
+        </Subheading>
+      </View>
       <FlatList
         style={{width: '100%'}}
         data={sortedAttendances}
@@ -42,7 +49,7 @@ export const ScreenListAttendance = ({route}) => {
                   icon={getIcon(item)}
                 />
               )}
-              description={item.joined_at || ''}
+              description={item.joined_at ? `Pointé à ${getHour(item.joined_at)}` : 'Absent'}
             />
           </View>
         )}

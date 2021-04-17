@@ -1,10 +1,22 @@
 // In App.js in a new project
 import * as React from 'react';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
+
 import Routes from './src/Routes';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <Routes />
+    <QueryClientProvider client={queryClient}>
+       <Routes />
+     </QueryClientProvider>
   );
 }
 

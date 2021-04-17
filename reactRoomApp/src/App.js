@@ -1,4 +1,8 @@
 import * as React from 'react';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
 import {Platform, UIManager} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Provider as PaperProvider, DefaultTheme} from 'react-native-paper';
@@ -23,6 +27,7 @@ const CustomDefaultTheme = {
 };
 
 Icon.loadFont();
+const queryClient = new QueryClient();
 
 class App extends React.Component {
   constructor(props) {
@@ -41,7 +46,9 @@ class App extends React.Component {
     return (
       <AppContext.Provider>
         <PaperProvider theme={CustomDefaultTheme}>
-          <AppNavigator />
+          <QueryClientProvider client={queryClient}>
+            <AppNavigator />
+          </QueryClientProvider>
         </PaperProvider>
       </AppContext.Provider>
     );

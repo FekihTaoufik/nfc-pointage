@@ -65,11 +65,11 @@ function NfcPromptAndroid(props) {
               resizeMode="contain"
             />
 
-            <Text>Please tap your NFC tag</Text>
+             <Text>Veuillez rapprocher votre tag NFC</Text>
           </View>
 
           <Button mode="contained" onPress={cancelNfcScan}>
-            CANCEL
+            Annuler
           </Button>
         </Animated.View>
 

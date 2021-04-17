@@ -120,6 +120,7 @@ class NfcProxy {
       } catch (ex) {
         if (NfcErrorIOS.parse(ex) !== NfcErrorIOS.errCodes.userCancel) {
           console.warn(ex);
+          await NfcManager.cancelTechnologyRequest();
         }
       }
       return {tag, value};
@@ -156,6 +157,7 @@ class NfcProxy {
     } catch (ex) {
       if (NfcErrorIOS.parse(ex) !== NfcErrorIOS.errCodes.userCancel) {
         console.warn(ex);
+        await NfcManager.cancelTechnologyRequest();
       }
     }
 

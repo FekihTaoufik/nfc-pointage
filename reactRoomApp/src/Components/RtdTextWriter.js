@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {View, Alert, FlatList, StyleSheet} from 'react-native';
-import {Button, TextInput} from 'react-native-paper';
-import {Text} from 'react-native-paper';
+import {Button, TextInput, Text, Subheading, Paragraph, Title} from 'react-native-paper'; 
+
 import {userGetDemo, userPostLogin} from '../apiRequest.js/apiRoutes/user';
 import NfcProxy from '../NfcProxy';
 
@@ -14,7 +14,7 @@ const messageUserSuccess = ({firstName, lastName, role}) => {
 const renderUser = ({firstName, lastName, role, universityCardId}) => {
   return `${
 role === 'TEACHER' ? 'Professeur' : 'Etudiant'
-  } ${firstName} ${lastName}: ${universityCardId}`;
+  } ${firstName} ${lastName}`;
 };
 
 function RtdTextWriter(props, ref) {
@@ -22,7 +22,9 @@ function RtdTextWriter(props, ref) {
   const [value, setValue] = React.useState(props.value || '');
   const [demoData, setDemoData] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
-
+  const clickItem = ({universityCardId}) => {
+    setValue(`${universityCardId}`)
+  }
   useEffect(() => {
     if (!isFetched) {
       userGetDemo().then((session) => {
@@ -93,11 +95,15 @@ function RtdTextWriter(props, ref) {
         Ecrire dans un tag
       </Button>
       <View style={styles.demoView}>
-        <Text>Pour les démos, utilisez ces numéros :</Text>
+        <Subheading style={{marginTop: 10}}>Pour les démos, utilisez ces numéros :</Subheading>
         <FlatList
           data={demoData}
           keyExtractor={(item) => item.id}
-          renderItem={({item}) => <Text style={styles.item}>- {renderUser(item)}</Text>}
+          renderItem={({item}) => 
+          <View style={styles.item}>
+            <Title style={{ fontSize: 15}} >{renderUser(item)}:</Title>
+            <Button onPress={() => clickItem(item)} mode="outlined">{item.universityCardId}</Button>
+          </View>}
         />
       </View>
     </View>
@@ -114,9 +120,7 @@ const styles = StyleSheet.create({
   },
   demoView: {
     flex: 1,
-    marginTop: 20,
     justifyContent: 'center',
-    padding: 10,
   },
 });
 

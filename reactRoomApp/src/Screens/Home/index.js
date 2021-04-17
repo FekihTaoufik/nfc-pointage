@@ -33,7 +33,7 @@ function HomeScreen(props) {
 
     initNfc();
   }, []);
-
+  console.log('home');
   function renderNfcButtons() {
     return (
       <View
@@ -46,6 +46,7 @@ function HomeScreen(props) {
         <Button
           mode="contained"
           onPress={async () => {
+            console.log('room');
             navigation.navigate('Room');
           }}
           style={{marginBottom: 10}}>

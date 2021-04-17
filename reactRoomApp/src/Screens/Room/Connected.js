@@ -1,14 +1,12 @@
 /* eslint-disable react-native/no-unused-styles */
 import React, {useCallback, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {Ndef} from 'react-native-nfc-manager';
 
-import {View, Text, Button, TextInput, Alert, StyleSheet} from 'react-native';
+import {View, Alert, StyleSheet} from 'react-native';
+import { Title, Subheading, Paragraph, ActivityIndicator, Button } from 'react-native-paper';
 import {
-  postLogin,
   roomGetCurrentSession,
 } from '../../apiRequest.js/apiRoutes/room';
-import {getData, storeData, KEY_ROOM} from '../../lib/localstore';
 import NfcProxy from '../../NfcProxy';
 import {rtdValueToName} from '../../Components/NdefMessage';
 import {
@@ -16,16 +14,20 @@ import {
   sessionPostAttendance,
   sessionPostCreateDemo,
 } from '../../apiRequest.js/apiRoutes/session';
+import { useQuery } from 'react-query';
+import { getDate} from '../../lib/helper';
+
 console.log(rtdValueToName);
-const KEY = 'room';
 
 const getFullName = ({firstName, lastName}) => `${firstName} ${lastName}`;
 const getRoleTitle = ({role}) =>
   `Présence ${role === 'TEACHER' ? 'professeur' : 'étudiante'} validée`;
 export const ScreenConnected = ({data, logOut}) => {
   const navigation = useNavigation();
-  const [currentSession, setCurrentSession] = useState(null);
-  const [isFetched, setIsFetched] = useState(false);
+
+  const { data: currentSession, isFetched, isFetching, refetch } = useQuery(`currentSession${data.id}`, () => roomGetCurrentSession(data.id), {
+    initialData: null
+  })
 
   const handleClickLogout = async () => {
     logOut();
@@ -36,20 +38,11 @@ export const ScreenConnected = ({data, logOut}) => {
       if (s.error) {
         Alert.alert('Erreur', s.message);
       } else {
-        setIsFetched(false);
+        refetch()
       }
     });
   };
-  useEffect(() => {
-    if (!isFetched) {
-      roomGetCurrentSession(data.id).then((session) => {
-        if (session) {
-          setCurrentSession(session);
-        }
-        setIsFetched(true);
-      });
-    }
-  }, [isFetched, data]);
+
   const readTagNFC = useCallback(() => {
     NfcProxy.readTag(readTagNFC).then(({value}) => {
       if (value) {
@@ -91,50 +84,60 @@ export const ScreenConnected = ({data, logOut}) => {
       }
     });
   }, [currentSession, navigation]);
+  console.log('currentSession', currentSession);
   return (
     <View style={styles.container}>
-      <Text style={{padding: 10, fontSize: 42}}>{data.name}</Text>
+      <Title style={{ padding: 20 }}>{data.name}</Title>
+      {isFetching && (
+        <ActivityIndicator animating={true} />
+      )}
       {isFetched && !currentSession && (
         <View style={{marginBottom: 20}}>
-          <Text style={{marginBottom: 10}}>
+          <Paragraph style={{marginBottom: 10}}>
             Aucun cours n'est programmé à cet instant
-          </Text>
+          </Paragraph>
           <Button
-            title="Créer un cours démo"
+            mode="contained"
             onPress={handleClickCreateDemoSession}
-          />
+          >Créer un cours démo</Button>
         </View>
       )}
-      {currentSession && (
+      {isFetched && currentSession && (
         <View style={{flex: 1, alignItems: 'center', paddingHorizontal: 20}}>
-          <Text style={{marginBottom: 10, fontSize: 20}}>
-            {currentSession.Group.name} - {getFullName(currentSession.Teacher)}
-          </Text>
-          <Text style={{marginBottom: 20, paddingVertical: 10, fontSize: 15}}>
+          <Title style={{fontSize: 20}}>
+          {currentSession.Group.name} - Professeur {getFullName(currentSession.Teacher)}
+          </Title>
+          <Subheading>
+          {getDate(currentSession.startedAt)} - {getDate(currentSession.endedAt)}
+          </Subheading>
+          <Paragraph style={{marginBottom: 20, paddingVertical: 10, fontSize: 15}}>
             {currentSession.name}
-          </Text>
+          </Paragraph>
           <View style={{marginBottom: 20}}>
             <Button
-              style={{padding: 20}}
-              title="Badger la présence"
+              mode="contained"
               onPress={readTagNFC}
-            />
+            >
+              Badger la présence
+            </Button>
           </View>
-          <View>
+          <View style={{marginBottom: 20}}>
             <Button
+              labelStyle={{ width: "100%"}}
+              mode="outlined"
               title="Voir les présences (professeur)"
               onPress={readAttendancesTagNFC}
-            />
+            >Voir les présences (professeur)</Button>
           </View>
         </View>
       )}
       <View style={styles.logout}>
         <Button
-          style={styles.logout}
+          mode="text"
           color="red"
           title="se deconnecter"
           onPress={handleClickLogout}
-        />
+        >se deconnecter</Button>
       </View>
     </View>
   );
@@ -144,7 +147,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 10,
   },
   logout: {
     position: 'absolute',
